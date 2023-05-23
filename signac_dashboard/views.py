@@ -46,6 +46,7 @@ def jobs_list(dashboard):
         flash("No jobs found.", "warning")
     g.jobs = dashboard._get_job_details(g.pagination.paginate(jobs))
     g.title = "signac-dashboard: Jobs"
+    g.schema_keys = dashboard._get_schema_keys()
     g.subtitle = g.pagination.item_counts()
     return dashboard._render_job_view(default_view="list")
 

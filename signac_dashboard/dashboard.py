@@ -356,6 +356,10 @@ class Dashboard:
     @lru_cache
     def _get_all_jobs(self):
         return sorted(self.project.find_jobs(), key=self.job_sorter)
+    
+    @lru_cache
+    def _get_schema_keys(self):
+        return [key for key in self.project.detect_schema()] # Might be very expensive. Caching good idea
 
     @lru_cache(maxsize=100)
     def _job_search(self, query):
@@ -750,7 +754,7 @@ class Dashboard:
         parser_run.set_defaults(func=_run)
 
         # This is a hack, as argparse itself does not
-        # allow to parse only --version without any
+        # allow to parse only --version without anyz
         # of the other required arguments.
         if "--version" in sys.argv:
             print("signac-dashboard", __version__)
