@@ -447,6 +447,8 @@ class Dashboard:
             return render_template("jobs_grid.html", *args, **kwargs)
         elif view_mode == "list":
             return render_template("jobs_list.html", *args, **kwargs)
+        elif view_mode == "table":
+            return render_template("jobs_table.html", *args, **kwargs)
         else:
             return self._render_error(ValueError(f"Invalid view mode: {view_mode}"))
 
