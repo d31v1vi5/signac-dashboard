@@ -14,7 +14,7 @@
             {% for key in g.schema_keys %}
             {% if (request.args.get("noRowFilter") == 'true') or (request.args.get(key) == 'on') %}
             <th>
-                <a>{{ key }}</a>
+                {{ key }}
             </th>
             {% endif %}
             {% endfor %}

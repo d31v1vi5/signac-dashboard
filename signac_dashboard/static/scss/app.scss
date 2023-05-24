@@ -88,6 +88,19 @@ section.section {
   border-bottom: 1px solid #d3d6db;
 }
 
+table,td,th {
+  border: 1px solid black;
+  padding: 0.25rem;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+th {
+  background-color: whitesmoke;
+}
+
 .modal, .modal-close {
   position: fixed; // Fixes bug where this is overwritten
 }
