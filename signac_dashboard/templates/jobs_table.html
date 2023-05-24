@@ -20,6 +20,11 @@
         {% for job_details in g.jobs %}
         <tr>
             <td><a href="{{ url_for('show_job', jobid=job_details.job._id) }}">{{ job_details.title }}</a></td>
+            {% for key in g.schema_keys %}
+            <td>
+                {{ job_details.job.sp.get(key) }}
+            </td>
+            {% endfor %}
         </tr>
         {% endfor %}
     </table>
