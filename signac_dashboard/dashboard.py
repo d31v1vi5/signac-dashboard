@@ -96,7 +96,7 @@ class Dashboard:
     :type modules: list
     """
 
-    def __init__(self, config={}, project=None, modules=[]):
+    def __init__(self, config={}, project=None, modules=[], sorters={}, default_sort=None):
         if project is None:
             self.project = signac.get_project()
         else:
@@ -104,6 +104,9 @@ class Dashboard:
 
         self.config = config
         self.modules = modules
+
+        self.sorters = sorters
+        self.selected_sort = default_sort
 
         self.event_handler = _FileSystemEventHandler(self) # Look more into this. Every time need to refresh??
         self.observer = Observer()
@@ -350,6 +353,8 @@ class Dashboard:
         :returns: Key for sorting.
         :rtype: any comparable type
         """
+        if self.sorters.get(self.selected_sort) is not None:
+            return  self.sorters.get(self.selected_sort)(job)
         key = natsort.natsort_keygen(key=self.job_title, alg=natsort.REAL)
         return key(job)
 
@@ -357,6 +362,13 @@ class Dashboard:
     def _get_all_jobs(self):
         return sorted(self.project.find_jobs(), key=self.job_sorter)
     
+    @lru_cache
+    def _get_sorters(self):
+        return [key for key in self.sorters]
+    
+    def _set_sorter(self, sort):
+        self.selected_sort = sort
+
     @lru_cache
     def _get_schema_keys(self):
         return [key for key in self.project.detect_schema()] # Might be very expensive. Caching good idea
@@ -640,6 +652,7 @@ class Dashboard:
         self.add_url("views.project_info", ["/project/"])
         self.add_url("views.jobs_list", ["/jobs/"])
         self.add_url("views.show_job", ["/jobs/<jobid>"])
+        self.add_url("views.sort", ["/sort/"])
         self.add_url(
             "views.get_file",
             ["/jobs/<jobid>/file/<path:filename>", "/project/file/<path:filename>"],
@@ -754,7 +767,7 @@ class Dashboard:
         parser_run.set_defaults(func=_run)
 
         # This is a hack, as argparse itself does not
-        # allow to parse only --version without anyz
+        # allow to parse only --version without any
         # of the other required arguments.
         if "--version" in sys.argv:
             print("signac-dashboard", __version__)

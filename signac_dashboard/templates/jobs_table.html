@@ -38,7 +38,7 @@
 
 {% block table_row_selector %}
 <div class="box sidebar-box">
-    <h2 class="subtitle is-4">Table Rows</h2>
+    <h2 class="subtitle is-4">Table Columns</h2>
     <form method="GET">
         <input type="hidden" name="view" value = "table">
         {% for key in  g.schema_keys %}
@@ -49,7 +49,6 @@
                         <label class="checkbox">
                             <input type="checkbox" name="{{ key }}" 
                             {%- if (request.args.get("noRowFilter") == 'true') or (request.args.get(key) == 'on') %} checked {% endif -%}
-                                {#{%- if loop.index0 in enabled_module_indices[context] %} checked{% endif -%}#}
                             > {{ key }}
                         </label>
                     </div>

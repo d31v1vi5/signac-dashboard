@@ -105,6 +105,29 @@
                         {% endif %} {# that checks number of enabled modules #}
                         </div>
                         {% endblock module_selector %}
+                        {% block sorter_selector %}
+                        {% set context = {"jobs": "JobContext", "project": "ProjectContext"}[g.active_page] %}
+                        <div class="box sidebar-box">
+                            <h2 class="subtitle is-4">Sorting</h2>
+                            <form action="{{ url_for('sort') }}" method="POST">
+                                <input type="hidden" name="redirect" value="{{ request.url }}">
+                                <div class="field is-horizontal">
+                                    <div class="field-body">
+                                        <div class="field">
+                                            <div class="control">
+                                                <select name="sorter">
+                                                    {% for sort in g.sorters %}
+                                                    <option value="{{sort}}">{{sort}}</option>
+                                                    {% endfor %}
+                                                  </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input class="button is-primary" type="submit" value="Update">
+                            </form>
+                        </div>
+                        {% endblock sorter_selector %}
                         {% block table_row_selector %} {% endblock table_row_selector %}
                     </div> <!-- end sidebar -->
                     {% endblock sidebar %}
