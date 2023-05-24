@@ -12,22 +12,52 @@
                 name
             </th>
             {% for key in g.schema_keys %}
+            {% if (request.args.get("noRowFilter") == 'true') or (request.args.get(key) == 'on') %}
             <th>
                 <a>{{ key }}</a>
             </th>
+            {% endif %}
             {% endfor %}
         </tr>
         {% for job_details in g.jobs %}
         <tr>
             <td><a href="{{ url_for('show_job', jobid=job_details.job._id) }}">{{ job_details.title }}</a></td>
             {% for key in g.schema_keys %}
+            {% if (request.args.get("noRowFilter") == 'true') or (request.args.get(key) == 'on') %}
             <td>
                 {{ job_details.job.sp.get(key) }}
             </td>
+            {% endif %}
             {% endfor %}
         </tr>
         {% endfor %}
     </table>
 </div>
 {% endif %}
+{% endblock %}
+
+{% block table_row_selector %}
+<div class="box sidebar-box">
+    <h2 class="subtitle is-4">Table Rows</h2>
+    <form method="GET">
+        <input type="hidden" name="view" value = "table">
+        {% for key in  g.schema_keys %}
+        <div class="field is-horizontal">
+            <div class="field-body">
+                <div class="field">
+                    <div class="control">
+                        <label class="checkbox">
+                            <input type="checkbox" name="{{ key }}" 
+                            {%- if (request.args.get("noRowFilter") == 'true') or (request.args.get(key) == 'on') %} checked {% endif -%}
+                                {#{%- if loop.index0 in enabled_module_indices[context] %} checked{% endif -%}#}
+                            > {{ key }}
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <input class="button is-primary" type="submit" value="Update">
+    </form>
+</div>
 {% endblock %}
