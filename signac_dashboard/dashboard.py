@@ -105,7 +105,7 @@ class Dashboard:
         self.config = config
         self.modules = modules
 
-        self.event_handler = _FileSystemEventHandler(self)
+        self.event_handler = _FileSystemEventHandler(self) # Look more into this. Every time need to refresh??
         self.observer = Observer()
         self.observer.schedule(self.event_handler, self.project.workspace)
 
@@ -279,7 +279,7 @@ class Dashboard:
 
     @lru_cache
     def _schema_variables(self):
-        schema = self.project.detect_schema(exclude_const=True)
+        schema = self.project.detect_schema(exclude_const=True) # This would not work for the Table View. Arguments breaks it... Need new method
         return [key for key in schema]
 
     @lru_cache
