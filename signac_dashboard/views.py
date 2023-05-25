@@ -37,22 +37,17 @@ def search(dashboard):
         g.title = f"Search: {g.query}"
         g.subtitle = g.pagination.item_counts()
         return dashboard._render_job_view(default_view="list")
-    
-def sort(dashboard):
-    dashboard._set_sorter(request.args.get("sort"))
-    g.jobs = dashboard._get_job_details(g.pagination.paginate(jobs))
-    return dashboard._render_job_view(default_view="list")
 
 
 def jobs_list(dashboard):
-    jobs = dashboard._get_all_jobs()
+    jobs = dashboard._get_all_jobs(sort=request.args.get("sort"))
     g.pagination = dashboard._setup_pagination(jobs)
     if not jobs:
         flash("No jobs found.", "warning")
     g.jobs = dashboard._get_job_details(g.pagination.paginate(jobs))
     g.title = "signac-dashboard: Jobs"
-    g.schema_keys = dashboard._get_schema_keys()
-    g.sorters = dashboard._get_sorters()
+    g.schema_keys = dashboard._schema_variables()
+    g.sorts = dashboard._get_sorts()
     g.subtitle = g.pagination.item_counts()
     return dashboard._render_job_view(default_view="list")
 

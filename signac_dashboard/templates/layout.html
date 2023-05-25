@@ -109,14 +109,19 @@
                         {% set context = {"jobs": "JobContext", "project": "ProjectContext"}[g.active_page] %}
                         <div class="box sidebar-box">
                             <h2 class="subtitle is-4">Sorting</h2>
-                            <form action="{{ url_for('sort') }}" method="POST">
+                            <form action="{{ url_for('jobs_list') }}" method="GET">
+                                {# To retain previous queries for display and link sharing #}
+                                {# !!! Introduced new bug where if repeated search is applied #}
+                                {% for key in request.args %}
+                                    <input type="hidden" name="{{key}}" value = "{{request.args.get(key)}}">
+                                {% endfor%}
                                 <input type="hidden" name="redirect" value="{{ request.url }}">
                                 <div class="field is-horizontal">
                                     <div class="field-body">
                                         <div class="field">
                                             <div class="control">
-                                                <select name="sorter">
-                                                    {% for sort in g.sorters %}
+                                                <select name="sort">
+                                                    {% for sort in g.sorts %}
                                                     <option value="{{sort}}">{{sort}}</option>
                                                     {% endfor %}
                                                   </select>
@@ -152,6 +157,7 @@
                             <div class="navbar-item">
                                 <form action="{{ url_for('search') }}" method="GET" id="searchform">
                                     {# To retain previous queries for display and link sharing #}
+                                    {# !!! Introduced new bug where if repeated search is applied #}
                                     {% for key in request.args %}
                                         <input type="hidden" name="{{key}}" value = "{{request.args.get(key)}}">
                                     {% endfor%}
