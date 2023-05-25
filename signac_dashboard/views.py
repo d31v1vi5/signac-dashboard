@@ -128,3 +128,6 @@ def settings(dashboard):
 
 def page_not_found(dashboard, error):
     return dashboard._render_error(str(error))
+
+def vtk(dashboard):
+    return render_template("vtk.html")

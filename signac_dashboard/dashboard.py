@@ -647,6 +647,7 @@ class Dashboard:
         self.add_url("views.project_info", ["/project/"])
         self.add_url("views.jobs_list", ["/jobs/"])
         self.add_url("views.show_job", ["/jobs/<jobid>"])
+        self.add_url("views.vtk", ["/vtk/"])
         self.add_url(
             "views.get_file",
             ["/jobs/<jobid>/file/<path:filename>", "/project/file/<path:filename>"],

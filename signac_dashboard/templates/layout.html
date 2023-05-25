@@ -68,6 +68,11 @@
                                         <i class="fas fa-table"></i>
                                     </span>
                                 </a>
+                                <a class="button" href="{{ url_for('vtk') }}" title="VTK">
+                                    <span class="icon is-small">
+                                        <i class="fas fa-star"></i>
+                                    </span>
+                                </a>
                             </p>
                         </div>
                         {% endblock view_options %}
@@ -158,7 +163,6 @@
                             <div class="navbar-item">
                                 <form action="{{ url_for('search') }}" method="GET" id="searchform">
                                     {# To retain previous queries for display and link sharing #}
-                                    {# !!! Introduced new bug where if repeated search is applied #}
                                     {% for key in request.args %}
                                         {% if key != "q" %}
                                         <input type="hidden" name="{{key}}" value = "{{request.args.get(key)}}">
